@@ -21,26 +21,7 @@ import java.util.Objects;
 public class BookRepositoryImpl extends CriteriaParent implements BookRepositoryCustom {
 
     @Override
-    public List<Book> findBooks(BookDTO bookDTO) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Book> cq = cb.createQuery(Book.class);
-
-        Root<Book> book = cq.from(Book.class);
-        List<Predicate> predicates = new ArrayList<>();
-
-        if (Objects.nonNull(bookDTO) && Objects.nonNull(bookDTO.getAuthor())) {
-            predicates.add(cb.equal(book.get("author"), bookDTO.getAuthor()));
-        }
-        if (Objects.nonNull(bookDTO) && Objects.nonNull(bookDTO.getTitle())) {
-            predicates.add(cb.like(book.get("title"), "%" + bookDTO.getTitle() + "%"));
-        }
-        cq.where(predicates.toArray(new Predicate[0]));
-
-        return em.createQuery(cq).getResultList();
-    }
-
-    @Override
-    public Page<Book> findBooksPageable(BookDTO bookDTO, Pageable page) {
+    public Page<Book> findBooks(BookDTO bookDTO, Pageable page) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Book> cq = cb.createQuery(Book.class);
 
@@ -61,8 +42,7 @@ public class BookRepositoryImpl extends CriteriaParent implements BookRepository
         query.setFirstResult(page.getPageNumber() * page.getPageSize());
         query.setMaxResults(page.getPageSize());
 
-        Page<Book> result = new PageImpl<Book>(query.getResultList(), page, totalRows);
-
+        Page<Book> result = new PageImpl<>(query.getResultList(), page, totalRows);
         return result;
     }
 }

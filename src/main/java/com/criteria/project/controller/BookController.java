@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -20,12 +19,6 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
-
-    @GetMapping
-    public List<Book> findBooks(BookDTO bookDTO){
-
-        return bookService.findBooks(bookDTO);
-    }
 
     @GetMapping("/pageable")
     public Page<Book> findBooks(BookDTO bookDTO, Integer page, Integer size){
@@ -38,7 +31,7 @@ public class BookController {
 
         Pageable pageable = PageRequest.of(page,size);
 
-        return bookService.findBooksPageable(bookDTO, pageable);
+        return bookService.findBooks(bookDTO, pageable);
     }
 
 }
