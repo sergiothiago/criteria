@@ -4,11 +4,9 @@ import com.criteria.project.domain.Book;
 import com.criteria.project.dto.BookDTO;
 import com.criteria.project.repositories.custom.BookRepositoryCustom;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -40,15 +38,10 @@ public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepo
 
         cq.where(predicates.toArray(new Predicate[0]));
 
-
-        TypedQuery<Book> query = em.createQuery(cq);
-        List resultList = query.getResultList();
-        int totalSize = resultList.size();
-
-        resultList = preparePaginationToQuery(page, query);
-        Page<Book> result = new PageImpl<>(resultList, page, totalSize);
+        Page<Book> result = getEntities(page, cq);
         return result;
     }
+
 
 
 }

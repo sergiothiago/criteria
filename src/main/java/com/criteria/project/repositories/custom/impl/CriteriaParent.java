@@ -1,10 +1,13 @@
 package com.criteria.project.repositories.custom.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class CriteriaParent<T> {
@@ -16,6 +19,16 @@ public class CriteriaParent<T> {
         query.setFirstResult(page.getPageNumber() * page.getPageSize());
         query.setMaxResults(page.getPageSize());
         return query.getResultList();
+    }
+
+    protected Page<T> getEntities(Pageable page, CriteriaQuery<T> cq) {
+        TypedQuery<T> query = em.createQuery(cq);
+        List resultList = query.getResultList();
+        int totalSize = resultList.size();
+
+        resultList = preparePaginationToQuery(page, query);
+        Page<T> result = new PageImpl<>(resultList, page, totalSize);
+        return result;
     }
 
 }
