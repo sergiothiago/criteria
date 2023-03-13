@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class BookRepositoryImpl extends CriteriaParent implements BookRepositoryCustom {
+public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepositoryCustom {
 
     @Override
     public Page<Book> findBooks(BookDTO bookDTO, Pageable page) {
@@ -37,12 +37,11 @@ public class BookRepositoryImpl extends CriteriaParent implements BookRepository
         cq.where(predicates.toArray(new Predicate[0]));
 
         TypedQuery<Book> query = em.createQuery(cq);
-        int totalRows = query.getResultList().size();
-
-        query.setFirstResult(page.getPageNumber() * page.getPageSize());
-        query.setMaxResults(page.getPageSize());
+        int totalRows = getTotalRows(page, query);
 
         Page<Book> result = new PageImpl<>(query.getResultList(), page, totalRows);
         return result;
     }
+
+
 }
