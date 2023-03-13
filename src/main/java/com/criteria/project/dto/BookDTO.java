@@ -13,4 +13,5 @@ public class BookDTO {
     String title;
     String author;
 
+    Long legacyId;
 }

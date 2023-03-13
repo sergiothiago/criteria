@@ -34,6 +34,10 @@ public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepo
         if (Objects.nonNull(bookDTO) && Objects.nonNull(bookDTO.getTitle())) {
             predicates.add(cb.like(book.get("title"), "%" + bookDTO.getTitle() + "%"));
         }
+        if (Objects.nonNull(bookDTO) && Objects.nonNull(bookDTO.getLegacyId())) {
+            predicates.add(cb.equal(book.get("legacyId"), bookDTO.getLegacyId()));
+        }
+
         cq.where(predicates.toArray(new Predicate[0]));
 
         TypedQuery<Book> query = em.createQuery(cq);
