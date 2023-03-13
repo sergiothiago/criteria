@@ -21,12 +21,9 @@ public class CriteriaParent<T> {
         return query.getResultList();
     }
 
-    protected Page<T> getEntities(Pageable page, CriteriaQuery<T> cq) {
+    protected Page<T> getEntities(Pageable page, CriteriaQuery<T> cq, Long totalSize) {
         TypedQuery<T> query = em.createQuery(cq);
-        List resultList = query.getResultList();
-        int totalSize = resultList.size();
-
-        resultList = preparePaginationToQuery(page, query);
+        List resultList = preparePaginationToQuery(page, query);
         Page<T> result = new PageImpl<>(resultList, page, totalSize);
         return result;
     }

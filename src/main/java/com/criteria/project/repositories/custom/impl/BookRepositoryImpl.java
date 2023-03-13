@@ -30,8 +30,21 @@ public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepo
 
         cq.where(predicates.toArray(new Predicate[0]));
 
-        Page<Book> result = getEntities(page, cq);
+        Long totalSize = getTotalSize(cb);
+
+        Page<Book> result = getEntities(page, cq, totalSize);
         return result;
+    }
+
+    /**
+     * Count para buscar a quantidade de itens no banco de dados.
+     * @param cb
+     * @return
+     */
+    private Long getTotalSize(CriteriaBuilder cb) {
+        CriteriaQuery<Long> cq2 = cb.createQuery(Long.class);
+        cq2.select(cb.count(cq2.from(Book.class)));
+        return em.createQuery(cq2).getSingleResult();
     }
 
     private static void filterAttributesFromEntity(BookDTO bookDTO, CriteriaBuilder cb, Root<Book> book, List<Predicate> predicates) {
