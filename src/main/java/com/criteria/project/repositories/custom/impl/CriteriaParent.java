@@ -13,8 +13,6 @@ public class CriteriaParent<T> {
     protected EntityManager em;
 
     protected List preparePaginationToQuery(Pageable page, TypedQuery<T> query) {
-        query.getResultList().size();
-
         query.setFirstResult(page.getPageNumber() * page.getPageSize());
         query.setMaxResults(page.getPageSize());
         return query.getResultList();
