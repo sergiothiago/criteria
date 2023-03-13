@@ -26,6 +26,15 @@ public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepo
         Root<Book> book = cq.from(Book.class);
         List<Predicate> predicates = new ArrayList<>();
 
+        filterAttributesFromEntity(bookDTO, cb, book, predicates);
+
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        Page<Book> result = getEntities(page, cq);
+        return result;
+    }
+
+    private static void filterAttributesFromEntity(BookDTO bookDTO, CriteriaBuilder cb, Root<Book> book, List<Predicate> predicates) {
         if (Objects.nonNull(bookDTO) && Objects.nonNull(bookDTO.getAuthor())) {
             predicates.add(cb.equal(book.get("author"), bookDTO.getAuthor()));
         }
@@ -35,13 +44,7 @@ public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepo
         if (Objects.nonNull(bookDTO) && Objects.nonNull(bookDTO.getLegacyId())) {
             predicates.add(cb.equal(book.get("legacyId"), bookDTO.getLegacyId()));
         }
-
-        cq.where(predicates.toArray(new Predicate[0]));
-
-        Page<Book> result = getEntities(page, cq);
-        return result;
     }
-
 
 
 }
