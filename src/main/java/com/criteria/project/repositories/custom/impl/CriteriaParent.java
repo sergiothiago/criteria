@@ -5,17 +5,19 @@ import org.springframework.data.domain.Pageable;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class CriteriaParent<T> {
 
     @PersistenceContext
     protected EntityManager em;
 
-    protected int getTotalRows(Pageable page, TypedQuery<T> query) {
-        int totalRows = query.getResultList().size();
+    protected List preparePaginationToQuery(Pageable page, TypedQuery<T> query) {
+        query.getResultList().size();
 
         query.setFirstResult(page.getPageNumber() * page.getPageSize());
         query.setMaxResults(page.getPageSize());
-        return totalRows;
+        return query.getResultList();
     }
+
 }

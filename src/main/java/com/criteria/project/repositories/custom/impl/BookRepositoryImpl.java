@@ -41,9 +41,9 @@ public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepo
         cq.where(predicates.toArray(new Predicate[0]));
 
         TypedQuery<Book> query = em.createQuery(cq);
-        int totalRows = getTotalRows(page, query);
+        List resultList = preparePaginationToQuery(page, query);
 
-        Page<Book> result = new PageImpl<>(query.getResultList(), page, totalRows);
+        Page<Book> result = new PageImpl<>(resultList, page, resultList.size());
         return result;
     }
 
