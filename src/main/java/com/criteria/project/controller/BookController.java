@@ -1,6 +1,5 @@
 package com.criteria.project.controller;
 
-import com.criteria.project.domain.Book;
 import com.criteria.project.dto.BookDTO;
 import com.criteria.project.dto.PageInfoDTO;
 import com.criteria.project.service.BookService;
@@ -18,8 +17,8 @@ public class BookController extends MainController {
     @Autowired
     private BookService bookService;
     
-    @GetMapping("/pageable")
-    public Page<Book> findBooks(BookDTO bookDTO, PageInfoDTO pageInfoDTO){
+    @GetMapping("/search")
+    public Page<BookDTO> findBooks(BookDTO bookDTO, PageInfoDTO pageInfoDTO){
         Pageable pageable = setDefaultPageableParameters(pageInfoDTO);
         return bookService.findBooks(bookDTO, pageable);
     }
