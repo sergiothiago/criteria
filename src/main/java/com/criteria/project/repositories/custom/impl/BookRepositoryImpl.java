@@ -38,13 +38,14 @@ public class BookRepositoryImpl extends CriteriaParent<Book> implements BookRepo
 
     /**
      * Count para buscar a quantidade de itens no banco de dados.
+     * Note que o criteria query deste não é o mesmo da entidade.
      * @param cb
      * @return
      */
     private Long getTotalSize(CriteriaBuilder cb) {
-        CriteriaQuery<Long> cq2 = cb.createQuery(Long.class);
-        cq2.select(cb.count(cq2.from(Book.class)));
-        return em.createQuery(cq2).getSingleResult();
+        CriteriaQuery<Long> secondCriteriaQuery = cb.createQuery(Long.class);
+        secondCriteriaQuery.select(cb.count(secondCriteriaQuery.from(Book.class)));
+        return em.createQuery(secondCriteriaQuery).getSingleResult();
     }
 
     private static void filterAttributesFromEntity(BookDTO bookDTO, CriteriaBuilder cb, Root<Book> book, List<Predicate> predicates) {
