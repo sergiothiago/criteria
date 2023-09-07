@@ -1,5 +1,6 @@
 package com.criteria.project.builder;
 
+import com.criteria.project.domain.Author;
 import com.criteria.project.domain.Book;
 import com.criteria.project.dto.BookDTO;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import java.util.Objects;
 @Component
 public class BookBuilder {
 
-    public static BookDTO entityToDTO(Book book) {
+    public BookDTO entityToDTO(Book book) {
         return BookDTO.builder()
                 .id(book.getId())
                 .title(book.getTitle())
@@ -20,7 +21,6 @@ public class BookBuilder {
     }
 
     public Book dtoToEntity(BookDTO bookDTO) {
-
         return dtoToEntity(bookDTO, Book.builder().build());
 
     }
@@ -29,6 +29,8 @@ public class BookBuilder {
         book.setId(bookDTO.getId());
         book.setTitle(bookDTO.getTitle());
         book.setLegacyId(bookDTO.getLegacyId());
+        book.setAuthor(Objects.nonNull(bookDTO.getAuthorId())? Author.builder().id(bookDTO.getAuthorId()).build() : null
+        );
 
         return book;
     }

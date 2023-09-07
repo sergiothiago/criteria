@@ -18,9 +18,9 @@ public class BookController extends MainController {
     private BookService bookService;
     
     @GetMapping("/search")
-    public Page<BookDTO> findBooks(BookDTO bookDTO, PageInfoDTO pageInfoDTO){
+    public Page<BookDTO> findAllWithCriteria(BookDTO bookDTO, PageInfoDTO pageInfoDTO){
         Pageable pageable = setDefaultPageableParameters(pageInfoDTO);
-        return bookService.findBooks(bookDTO, pageable);
+        return bookService.findAllWithCriteria(bookDTO, pageable);
     }
 
 }
