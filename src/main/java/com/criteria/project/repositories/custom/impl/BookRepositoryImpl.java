@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
@@ -19,7 +20,7 @@ public class BookRepositoryImpl extends CriteriaParent<Book, BookDTO> implements
 
     @Override
     protected void doJoins(Root root) {
-
+        root.fetch("author", JoinType.LEFT);
     }
 
     @Override
