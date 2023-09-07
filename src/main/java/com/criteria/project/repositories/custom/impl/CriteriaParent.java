@@ -9,7 +9,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public abstract class CriteriaParent<T, S> {
 
@@ -32,13 +37,14 @@ public abstract class CriteriaParent<T, S> {
     protected abstract void doJoins(Root<T> root);
 
     protected abstract void filterAttributesFromEntity(S paramsDto,
-                                           CriteriaBuilder cb,
-                                           Root<T> root,
-                                           List<Predicate> predicates);
+                                                       CriteriaBuilder cb,
+                                                       Root<T> root,
+                                                       List<Predicate> predicates);
 
     /**
      * Count para buscar a quantidade de itens no banco de dados.
      * Note que o criteria query deste não é o mesmo da entidade.
+     *
      * @return
      */
     protected Long getTotalSize(S paramDto, Class<T> clazz) {
@@ -69,3 +75,4 @@ public abstract class CriteriaParent<T, S> {
         Page<T> result = getEntities(pageable, cq, totalSize);
         return result;
     }
+}
